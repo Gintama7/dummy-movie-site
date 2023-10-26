@@ -12,19 +12,28 @@ const MovieForm = () => {
         setFormData({...formData,[name]:value});
     }
 
-    const addMovieHandler=(e)=>{
+    const addMovieHandler=async(e)=>{
             e.preventDefault();
         const obj=formData;
-        console.log(obj);
+       const response = await fetch('https://react-http-rtd-default-rtdb.firebaseio.com/movies.json',{
+            method:'POST',
+            body: JSON.stringify(obj),
+            header:{
+               ' Content-Type':'application/json'
+            }
+        })
+        const data= await response.json();
+        console.log(data);
+
     }
   return (
     <form action="">
           <label htmlFor="title">Title</label>
-    <input name='title' type='text' onChange={handleChange}/>
+    <input name='title' id='title' type='text' onChange={handleChange}/>
     <label htmlFor="opening">Opening Text</label>
-    <textarea name="opening" id="" cols="30" rows="6" onChange={handleChange}/>
+    <textarea name="opening" id="opening" cols="30" rows="6" onChange={handleChange}/>
     <label htmlFor="date">Release Date</label>
-    <input type="text" name='date' onChange={handleChange}/>
+    <input type="text" name='date' id='date' onChange={handleChange}/>
     <button onClick={addMovieHandler}>Add Movie</button>
         </form>
   )
